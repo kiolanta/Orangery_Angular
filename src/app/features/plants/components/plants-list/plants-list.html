@@ -1,0 +1,72 @@
+<div class="plants-container">
+  <div class="page-header">
+    <div>
+      <h1>🌱 Plants Management</h1>
+      <p class="subtitle">Manage your plants collection</p>
+    </div>
+    <button class="btn-add" (click)="openAddForm()">
+      <span class="btn-icon">+</span>
+      Add New Plant
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading plants...</p>
+  </div>
+
+  <div *ngIf="error" class="error-card">
+    <p>{{ error }}</p>
+    <button (click)="loadPlants()" class="btn-retry">Try Again</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error" class="plants-content">
+    <div *ngIf="plants.length === 0" class="no-data">
+      <div class="no-data-icon">🌿</div>
+      <p>No plants found</p>
+      <button class="btn-add-first" (click)="openAddForm()">Add Your First Plant</button>
+    </div>
+
+    <div *ngIf="plants.length > 0" class="table-card">
+      <table class="plants-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Planting Date</th>
+            <th>Location ID</th>
+            <th>Species ID</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let plant of plants">
+            <td><span class="id-badge">{{ plant.id }}</span></td>
+            <td><strong>{{ plant.name }}</strong></td>
+            <td>{{ plant.plantingDate }}</td>
+            <td>{{ plant.locationId }}</td>
+            <td>{{ plant.speciesId }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-icon-action btn-edit" (click)="openEditForm(plant)" title="Edit">
+                  ✏️
+                </button>
+                <button class="btn-icon-action btn-delete" (click)="deletePlant(plant.id)" title="Delete">
+                  🗑️
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-plant-form 
+  *ngIf="showForm"
+  [plant]="selectedPlant"
+  (formSubmit)="onFormSubmit($event)"
+  (formCancel)="closeForm()">
+</app-plant-form>
+

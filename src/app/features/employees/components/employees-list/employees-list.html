@@ -1,0 +1,72 @@
+<div class="employees-container">
+  <div class="page-header">
+    <div>
+      <h1>👥 Employees Management</h1>
+      <p class="subtitle">Manage your team members</p>
+    </div>
+    <button class="btn-add" (click)="openAddForm()">
+      <span class="btn-icon">+</span>
+      Add New Employee
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading employees...</p>
+  </div>
+
+  <div *ngIf="error" class="error-card">
+    <p>{{ error }}</p>
+    <button (click)="loadEmployees()" class="btn-retry">Try Again</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error" class="employees-content">
+    <div *ngIf="employees.length === 0" class="no-data">
+      <div class="no-data-icon">👤</div>
+      <p>No employees found</p>
+      <button class="btn-add-first" (click)="openAddForm()">Add Your First Employee</button>
+    </div>
+
+    <div *ngIf="employees.length > 0" class="table-card">
+      <table class="employees-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Position</th>
+            <th>Salary</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employees">
+            <td><span class="id-badge">{{ employee.id }}</span></td>
+            <td><strong>{{ employee.firstName }} {{ employee.lastName }}</strong></td>
+            <td>{{ employee.phoneNumber }}</td>
+            <td>{{ employee.position }}</td>
+            <td class="salary">{{ employee.salary | currency:'UAH':'symbol':'1.2-2' }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-icon-action btn-edit" (click)="openEditForm(employee)" title="Edit">
+                  ✏️
+                </button>
+                <button class="btn-icon-action btn-delete" (click)="deleteEmployee(employee.id)" title="Delete">
+                  🗑️
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-employee-form 
+  *ngIf="showForm"
+  [employee]="selectedEmployee"
+  (formSubmit)="onFormSubmit($event)"
+  (formCancel)="closeForm()">
+</app-employee-form>
+

@@ -1,0 +1,88 @@
+<div class="form-overlay">
+  <div class="form-container">
+    <div class="form-header">
+      <h2>{{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}</h2>
+      <button class="btn-close" (click)="onCancel()">×</button>
+    </div>
+
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name *</label>
+          <input 
+            type="text" 
+            id="firstName" 
+            formControlName="firstName"
+            [class.invalid]="firstName?.invalid && firstName?.touched"
+            placeholder="Enter first name">
+          <div class="error-message" *ngIf="firstName?.invalid && firstName?.touched">
+            <span *ngIf="firstName?.errors?.['required']">First name is required</span>
+            <span *ngIf="firstName?.errors?.['maxlength']">Maximum 100 characters</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name *</label>
+          <input 
+            type="text" 
+            id="lastName" 
+            formControlName="lastName"
+            [class.invalid]="lastName?.invalid && lastName?.touched"
+            placeholder="Enter last name">
+          <div class="error-message" *ngIf="lastName?.invalid && lastName?.touched">
+            <span *ngIf="lastName?.errors?.['required']">Last name is required</span>
+            <span *ngIf="lastName?.errors?.['maxlength']">Maximum 100 characters</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number *</label>
+        <input 
+          type="tel" 
+          id="phoneNumber" 
+          formControlName="phoneNumber"
+          [class.invalid]="phoneNumber?.invalid && phoneNumber?.touched"
+          placeholder="Enter phone number">
+        <div class="error-message" *ngIf="phoneNumber?.invalid && phoneNumber?.touched">
+          <span *ngIf="phoneNumber?.errors?.['required']">Phone number is required</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="position">Position *</label>
+        <input 
+          type="text" 
+          id="position" 
+          formControlName="position"
+          [class.invalid]="position?.invalid && position?.touched"
+          placeholder="Enter position">
+        <div class="error-message" *ngIf="position?.invalid && position?.touched">
+          <span *ngIf="position?.errors?.['required']">Position is required</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="salary">Salary *</label>
+        <input 
+          type="number" 
+          id="salary" 
+          formControlName="salary"
+          [class.invalid]="salary?.invalid && salary?.touched"
+          placeholder="Enter salary"
+          step="0.01">
+        <div class="error-message" *ngIf="salary?.invalid && salary?.touched">
+          <span *ngIf="salary?.errors?.['required']">Salary is required</span>
+          <span *ngIf="salary?.errors?.['min']">Salary must be greater than 0</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-cancel" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-submit" [disabled]="employeeForm.invalid">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

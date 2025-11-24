@@ -1,0 +1,58 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p class="subtitle">Welcome to Orangery Management System</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    <p>Завантаження...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+    <button (click)="loadDashboardData()" class="btn-retry">Спробувати знову</button>
+  </div>
+
+  <div *ngIf="dashboardData && !isLoading" class="dashboard-content">
+    <div class="stats-grid">
+      <div class="stat-card plants-card">
+        <div class="stat-icon">🌱</div>
+        <div class="stat-info">
+          <h3>Total Plants</h3>
+          <p class="stat-value">{{ dashboardData.totalPlants }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card employees-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <h3>Total Employees</h3>
+          <p class="stat-value">{{ dashboardData.totalEmployees }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card sensors-card">
+        <div class="stat-icon">📡</div>
+        <div class="stat-info">
+          <h3>Active Sensors</h3>
+          <p class="stat-value">{{ dashboardData.activeSensors }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <h2>Quick Actions</h2>
+      <div class="actions-grid">
+        <a routerLink="/plants" class="action-card">
+          <span class="action-icon">🌿</span>
+          <span class="action-text">View Plants</span>
+        </a>
+        <a routerLink="/employees" class="action-card">
+          <span class="action-icon">👤</span>
+          <span class="action-text">View Employees</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
