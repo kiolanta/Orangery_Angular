@@ -1,59 +1,153 @@
-# AngularKpzIolanta
+<div align="center">
+	<h1>Orangery Angular</h1>
+	<p><strong>Система керування рослинами та працівниками з дашбордом агрегованих даних</strong></p>
+	<p>
+		<a href="#quick-start">Швидкий старт</a> ·
+		<a href="API_INTEGRATION.md">API Guide</a> ·
+		<a href="#features">Можливості</a>
+	</p>
+</div>
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.10.
+---
 
-## Development server
+## Огляд
+Проєкт побудований на **Angular 20 (CLI 20.3.10)** та призначений для керування сутностями:
+- Працівники (CRUD)
+- Рослини (CRUD)
+- Дашборд із агрегованими метриками (кількість рослин, працівників, активних сенсорів)
 
-To start a local development server, run:
+Архітектура організована за принципом розділення на `core`, `features` та `shared`, з чіткими сервісами, інтерфейсами та компонентами. Стилізація здійснюється через **SCSS** з глобальними змінними та градієнтною фіолетовою палітрою `#667eea → #764ba2`.
 
-```bash
-ng serve
+## Features
+- 🌿 Управління рослинами (список, створення, редагування, видалення)
+- 👥 Управління працівниками (список + форма)
+- 📊 Дашборд із агрегованими даними
+- 🔌 Інтеграція з REST API (`http://localhost:7232/api`)
+- 🧱 Структуровані інтерфейси (`Employee`, `Plant`, `DashboardData`)
+- 🚦 Завантаження / помилки / порожні стани з дружнім UI
+- 🎨 Єдина стилістична палітра (фіолетовий градієнт) + адаптивний дизайн
+- ✅ Юніт тести через Karma + Jasmine
+- 🧹 Linting через `angular-eslint` + Prettier форматування
+
+## Технологічний стек
+| Layer | Tech |
+|-------|------|
+| Framework | Angular 20 |
+| Language | TypeScript 5.9 |
+| Styles | SCSS (modular, partials, variables) |
+| State | RxJS Observables (легкий підхід) |
+| Testing | Karma + Jasmine |
+| Linting | ESLint (angular-eslint) |
+
+## Архітектура та структура
+```
+src/
+	app/
+		core/            # Базові сервіси, інтерфейси
+		shared/          # Переюзабельні компоненти, константи, утиліти
+		features/
+			dashboard/     # Дашборд + сервіс агрегованих даних
+			plants/        # Рослини: компоненти, сервіси, інтерфейси
+			employees/     # Працівники: список + форма
+	assets/            # Шрифти, іконки, зображення
+	styles/            # SCSS partials (_variables, _mixins, _animations)
+	environments/      # Конфігурація середовищ (dev/prod)
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Основні папки
+- `core/services/*` – API сервіси для базових сутностей
+- `features/**/services` – Сервіси специфічні для функціональних модулів
+- `features/**/components` – UI логіка та відображення
+- `shared/components` – Перевикористовувані компоненти (наприклад, `navbar`)
+- `environments/*` – URL API та конфігурації для різних збірок
 
-## Code scaffolding
+## Середовище & Конфігурація
+Значення базового API налаштовується в файлах:
+```
+src/environments/environment.ts
+src/environments/environment.development.ts
+src/environments/environment.production.ts
+```
+Для продакшн збірки замініть `apiUrl` у `environment.production.ts` на реальний кінцевий URL.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## API Інтеграція
+Детальна документація по ендпоінтах та прикладах знаходиться в файлі [`API_INTEGRATION.md`](API_INTEGRATION.md).
 
-```bash
-ng generate component component-name
+Швидкий приклад використання сервісу рослин:
+```ts
+import { Component, OnInit, inject } from '@angular/core';
+import { Plants } from 'src/app/features/plants/services/plants';
+
+@Component({ selector: 'app-example', template: '' })
+export class ExampleComponent implements OnInit {
+	private plantsService = inject(Plants);
+	ngOnInit() {
+		this.plantsService.getPlants().subscribe(plants => console.log(plants));
+	}
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+## Скрипти npm
 ```bash
-ng generate --help
+npm start        # dev сервер (http://localhost:4200)
+npm run build    # продакшн збірка у dist/
+npm test         # юніт тести
+npm run watch    # інкрементальна збірка
+npm run lint     # ESLint перевірка
 ```
 
-## Building
-
-To build the project run:
-
+## Quick Start
 ```bash
-ng build
+git clone <repo-url>
+cd angular-kpz-iolanta
+npm install
+npm start
+# Відкрити http://localhost:4200
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Розробка
+1. Створити гілку: `feat/<назва>` або `fix/<issue>`
+2. Додати/оновити компоненти через Angular CLI: `ng generate component <name>`
+3. Покрити логіку тестами (якщо змінюються сервіси або пайпи)
+4. Прогнати `npm run lint` перед комітом
+5. Створити PR з чітким описом змін
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
+## Тестування
+Запуск усіх тестів:
 ```bash
-ng test
+npm test
 ```
+Звіт покриття генерується у `coverage/` (якщо увімкнено в конфігурації Karma).
 
-## Running end-to-end tests
+## Якість коду
+- **ESLint**: правила з пакету `angular-eslint`
+- **Prettier**: форматування (`printWidth: 100`, одинарні лапки)
+- **Стандарти**: Іменування компонентів у стилі `PascalCase`, сервіси – `CamelCase` файли, інтерфейси – префікс без `I`.
 
-For end-to-end (e2e) testing, run:
+## Стилізація
+- Глобальні стилі: `src/styles.scss`
+- Частини: `assets/styles/_variables.scss`, `_mixins.scss`, `_animations.scss`
+- Палітра: градієнт `linear-gradient(135deg, #667eea 0%, #764ba2 100%)`
+- Компонентні стилі ізоляція через SCSS + BEM/семантичні назви
 
-```bash
-ng e2e
-```
+## Майбутні покращення
+- Додати реактивні форми для редагування рослин/працівників
+- Пагінація + сортування + фільтри
+- Обробка помилок через HTTP Interceptor (toast notifications)
+- Skeleton loaders / shimmer ефекти
+- Авторизація та ролі (admin / user)
+- CI pipeline (GitHub Actions: build + lint + test)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Внесок (Contributing)
+Приймаються пропозиції. Будь ласка, відкрийте Issue перед великими змінами.
 
-## Additional Resources
+## Статус / Ліцензія
+Проєкт позначений як `private` (див. `package.json`). Для внутрішнього використання.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Довідка
+- Офіційна документація Angular: https://angular.dev
+- RxJS: https://rxjs.dev
+- ESLint Angular: https://github.com/angular-eslint/angular-eslint
+
+
+
