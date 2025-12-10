@@ -1,0 +1,53 @@
+.care-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  background: #f8f6ff;
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 8px rgba(108, 46, 183, 0.06);
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    label {
+      font-weight: 500;
+      color: #6c2eb7;
+    }
+    input, select {
+      padding: 0.5rem 1rem;
+      border: 1px solid #d1c4e9;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .form-error {
+      color: #d32f2f;
+      font-size: 0.9rem;
+    }
+  }
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    button {
+      padding: 0.6rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      &:disabled {
+        background: #e0e0e0;
+        color: #aaa;
+        cursor: not-allowed;
+      }
+    }
+    .btn-cancel {
+      background: #f3e7ff;
+      color: #6c2eb7;
+    }
+  }
+}

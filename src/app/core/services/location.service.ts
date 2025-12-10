@@ -18,4 +18,16 @@ export class LocationService {
   getLocation(id: number): Observable<LocationViewModel> {
     return this.http.get<LocationViewModel>(`${this.apiUrl}/${id}`);
   }
+
+  createLocation(location: any): Observable<LocationViewModel> {
+    return this.http.post<LocationViewModel>(this.apiUrl, location);
+  }
+
+  updateLocation(id: number, location: any): Observable<LocationViewModel> {
+    return this.http.put<LocationViewModel>(`${this.apiUrl}/${id}`, location);
+  }
+
+  deleteLocation(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

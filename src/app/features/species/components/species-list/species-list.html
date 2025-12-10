@@ -1,0 +1,113 @@
+<div class="species-container">
+  <div class="page-header">
+    <div>
+      <h1>Види рослин</h1>
+      <p class="subtitle">Управління видами рослин</p>
+    </div>
+    <button class="btn-add" (click)="openAddForm()">
+      <span class="btn-icon">+</span>
+      Додати вид
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Завантаження...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-card">
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="loadSpecies()">Спробувати знову</button>
+  </div>
+
+  <div *ngIf="!loading && !error && species.length === 0" class="no-data">
+    <div class="no-data-icon">🌱</div>
+    <p>Видів рослин поки немає</p>
+    <button class="btn-add-first" (click)="openAddForm()">Додати перший вид</button>
+  </div>
+
+  <div *ngIf="!loading && !error && species.length > 0" class="table-card">
+    <table class="species-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Назва виду</th>
+          <th>Дії</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of species" class="row-main" (click)="openCareModal(item)" style="cursor: pointer;">
+          <td>
+            <span class="id-badge">#{{ item.id }}</span>
+          </td>
+          <td><strong>{{ item.name }}</strong></td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-icon-action btn-edit" (click)="openEditForm(item); $event.stopPropagation();" title="Редагувати">
+                ✏️
+              </button>
+              <button class="btn-icon-action btn-delete" (click)="deleteSpecies(item.id); $event.stopPropagation();" title="Видалити">
+                🗑️
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Модальне вікно з деталями догляду -->
+<div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Деталі догляду за видом</h2>
+      <button class="modal-close" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="selectedSpeciesForDetail" class="species-detail">
+        <h3>{{ selectedSpeciesForDetail.name }}</h3>
+        
+        <div *ngIf="!careGuidesLoading; else careLoadingTpl" class="care-details">
+          <ng-container *ngIf="getCareGuideBySpecies(selectedSpeciesForDetail.id) as cg; else noCareTpl">
+            <div class="care-detail-table">
+              <div class="detail-row">
+                <span class="detail-label">Ґрунт</span>
+                <span class="detail-value">{{ cg.soilType || '—' }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Добриво</span>
+                <span class="detail-value">{{ cg.fertilizerType || '—' }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Полив</span>
+                <span class="detail-value">{{ cg.wateringFrequency || '—' }}</span>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-close-modal" (click)="closeModal()">Закрити</button>
+    </div>
+  </div>
+</div>
+
+<app-species-form
+  *ngIf="showForm"
+  [species]="editingSpecies"
+  (formSubmit)="onSubmit($event)"
+  (formCancel)="closeForm()"
+></app-species-form>
+
+<ng-template #careLoadingTpl>
+  <div class="care-loading">Завантаження гіда догляду...</div>
+</ng-template>
+
+<ng-template #noCareTpl>
+  <div class="care-empty">Немає даних про догляд для цього виду</div>
+</ng-template>
+

@@ -1,0 +1,65 @@
+<div class="locations-container">
+  <div class="page-header">
+    <div>
+      <h1>Локації</h1>
+      <p class="subtitle">Управління локаціями оранжереї</p>
+    </div>
+    <button class="btn-add" (click)="openAddForm()">
+      <span class="btn-icon">+</span>
+      Додати локацію
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Завантаження...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-card">
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="loadLocations()">Спробувати знову</button>
+  </div>
+
+  <div *ngIf="!loading && !error && locations.length === 0" class="no-data">
+    <div class="no-data-icon">📍</div>
+    <p>Локацій поки немає</p>
+    <button class="btn-add-first" (click)="openAddForm()">Додати першу локацію</button>
+  </div>
+
+  <div *ngIf="!loading && !error && locations.length > 0" class="table-card">
+    <table class="locations-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Назва</th>
+          <th>Дії</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let location of locations">
+          <td>
+            <span class="id-badge">#{{ location.id }}</span>
+          </td>
+          <td><strong>{{ location.name }}</strong></td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-icon-action btn-edit" (click)="openEditForm(location)" title="Редагувати">
+                ✏️
+              </button>
+              <button class="btn-icon-action btn-delete" (click)="deleteLocation(location.id)" title="Видалити">
+                🗑️
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-location-form
+  *ngIf="showForm"
+  [location]="editingLocation"
+  (formSubmit)="onSubmit($event)"
+  (formCancel)="closeForm()"
+></app-location-form>

@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="care-form">
+  <div class="form-row">
+    <label>Тип догляду</label>
+    <select formControlName="type">
+      <option value="" disabled>Оберіть тип догляду</option>
+      <option *ngFor="let careType of careTypes" [value]="careType">{{ careType }}</option>
+    </select>
+    <div *ngIf="form.get('type')?.invalid && form.get('type')?.touched" class="form-error">
+      Оберіть тип догляду
+    </div>
+  </div>
+  <div class="form-row">
+    <label>Дата</label>
+    <input formControlName="date" type="date" />
+    <div *ngIf="form.get('date')?.invalid && form.get('date')?.touched" class="form-error">
+      Вкажіть дату
+    </div>
+  </div>
+  <div class="form-row">
+    <label>Рослина</label>
+    <select formControlName="plantId">
+      <option [ngValue]="null" disabled>Оберіть рослину</option>
+      <option *ngFor="let plant of plants" [ngValue]="plant.id">{{ plant.name }}</option>
+    </select>
+    <div *ngIf="form.get('plantId')?.invalid && form.get('plantId')?.touched" class="form-error">
+      Оберіть рослину
+    </div>
+  </div>
+  <div class="form-row">
+    <label>Працівник</label>
+    <select formControlName="employeeId">
+      <option [ngValue]="null" disabled>Оберіть працівника</option>
+      <option *ngFor="let employee of employees" [ngValue]="employee.id">
+        {{ employee.firstName }} {{ employee.lastName }}
+      </option>
+    </select>
+    <div *ngIf="form.get('employeeId')?.invalid && form.get('employeeId')?.touched" class="form-error">
+      Оберіть працівника
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit" [disabled]="form.invalid">Додати</button>
+    <button type="button" (click)="cancel()" class="btn-cancel">Скасувати</button>
+  </div>
+</form>

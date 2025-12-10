@@ -1,32 +1,9 @@
-  .btn-care-journal {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #f3e7ff 0%, #c9b6e7 100%);
-    color: #6c2eb7;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(108, 46, 183, 0.08);
-    &:hover {
-      background: linear-gradient(135deg, #e9d8fd 0%, #b794f4 100%);
-      color: #4b206e;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(108, 46, 183, 0.12);
-    }
-    .btn-icon {
-      font-size: 1.3rem;
-    }
-  }
-.plants-container {
+﻿.species-container {
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 
   .page-header {
     display: flex;
@@ -52,7 +29,7 @@
       gap: 0.5rem;
       padding: 0.75rem 1.5rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      color: #fff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -73,100 +50,16 @@
     }
   }
 
-  .filters-panel {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-
-    .filters-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 1.5rem;
-      align-items: end;
-
-      @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-
-      label {
-        font-weight: 500;
-        color: #333;
-        font-size: 0.9rem;
-      }
-
-      .filter-input,
-      .filter-select {
-        padding: 0.75rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.3s;
-
-        &:focus {
-          outline: none;
-          border-color: #667eea;
-        }
-      }
-
-      .filter-select {
-        cursor: pointer;
-        background: white;
-      }
-    }
-
-    .filter-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      align-items: flex-end;
-
-      .btn-clear-filters {
-        padding: 0.75rem 1.5rem;
-        background: #f5f5f5;
-        color: #666;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.2s;
-        white-space: nowrap;
-
-        &:hover {
-          background: #e0e0e0;
-        }
-      }
-
-      .results-count {
-        color: #666;
-        font-size: 0.9rem;
-        white-space: nowrap;
-
-        strong {
-          color: #667eea;
-          font-weight: 600;
-        }
-      }
-    }
-  }
-
   .loading {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 4rem 2rem;
-    background: white;
+    background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    
+
     .spinner {
       width: 50px;
       height: 50px;
@@ -190,10 +83,10 @@
   .error-card {
     text-align: center;
     padding: 2rem;
-    background: white;
+    background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    
+
     p {
       color: #dc3545;
       margin-bottom: 1rem;
@@ -202,13 +95,13 @@
     .btn-retry {
       padding: 0.75rem 1.5rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      color: #fff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-size: 1rem;
       transition: transform 0.2s;
-      
+
       &:hover {
         transform: translateY(-2px);
       }
@@ -218,7 +111,7 @@
   .no-data {
     text-align: center;
     padding: 4rem 2rem;
-    background: white;
+    background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
@@ -236,7 +129,7 @@
     .btn-add-first {
       padding: 0.75rem 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      color: #fff;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -251,24 +144,24 @@
   }
 
   .table-card {
-    background: white;
+    background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     overflow: hidden;
   }
 
-  .plants-table {
+  .species-table {
     width: 100%;
     border-collapse: collapse;
 
     thead {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      
+
       th {
         padding: 1rem;
         text-align: left;
         font-weight: 600;
-        color: white;
+        color: #fff;
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -279,11 +172,11 @@
       tr {
         border-bottom: 1px solid #f0f0f0;
         transition: background 0.2s;
-        
+
         &:hover {
           background-color: #f8f9ff;
         }
-        
+
         &:last-child {
           border-bottom: none;
         }
@@ -297,7 +190,7 @@
           display: inline-block;
           padding: 0.25rem 0.75rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
+          color: #fff;
           border-radius: 12px;
           font-size: 0.875rem;
           font-weight: 600;
@@ -324,10 +217,12 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 
         &.btn-edit {
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          
+          color: #fff;
+
           &:hover {
             transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
@@ -336,6 +231,7 @@
 
         &.btn-delete {
           background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+          color: #fff;
 
           &:hover {
             transform: scale(1.1);
@@ -345,5 +241,24 @@
       }
     }
   }
-}
 
+  .row-main {
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background-color: #f8f9ff;
+    }
+
+    td {
+      background: #fff;
+    }
+  }
+
+  .care-loading,
+  .care-empty {
+    padding: 10px 12px;
+    color: #5a5a70;
+    font-size: 14px;
+  }
+}

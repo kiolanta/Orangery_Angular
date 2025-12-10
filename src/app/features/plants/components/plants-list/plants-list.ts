@@ -1,26 +1,63 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { Plants } from '../../services/plants';
 import { PlantViewModel, PlantCreateViewModel } from '../../interfaces/plant.interface';
 import { PlantForm } from '../plant-form/plant-form';
+import { Locations } from '../../../locations/services/locations';
+import { Species } from '../../../species/services/species';
+import { LocationViewModel, SpeciesViewModel } from '../../../../core/interfaces';
 
 @Component({
   selector: 'app-plants-list',
-  imports: [CommonModule, PlantForm],
+  imports: [CommonModule, FormsModule, RouterModule, PlantForm],
   templateUrl: './plants-list.html',
   styleUrl: './plants-list.scss',
 })
 export class PlantsList implements OnInit {
   private readonly plantsService = inject(Plants);
+  private readonly locationsService = inject(Locations);
+  private readonly speciesService = inject(Species);
   
   plants: PlantViewModel[] = [];
+  filteredPlants: PlantViewModel[] = [];
+  locations: LocationViewModel[] = [];
+  species: SpeciesViewModel[] = [];
   isLoading = true;
   error: string | null = null;
   showForm = false;
   selectedPlant: PlantViewModel | null = null;
 
+  searchTerm: string = '';
+  selectedLocationId: number | null = null;
+
   ngOnInit(): void {
+    this.loadLocations();
+    this.loadSpecies();
     this.loadPlants();
+  }
+
+  loadLocations(): void {
+    this.locationsService.getLocations().subscribe({
+      next: (data) => {
+        this.locations = data;
+      },
+      error: (err) => {
+        console.error('Помилка завантаження локацій:', err);
+      }
+    });
+  }
+
+  loadSpecies(): void {
+    this.speciesService.getSpecies().subscribe({
+      next: (data) => {
+        this.species = data;
+      },
+      error: (err) => {
+        console.error('Помилка завантаження видів рослин:', err);
+      }
+    });
   }
 
   loadPlants(): void {
@@ -30,6 +67,8 @@ export class PlantsList implements OnInit {
       next: (data) => {
         console.log('Рослини отримано:', data);
         this.plants = data;
+        this.filteredPlants = data;
+        this.applyFilters();
         this.isLoading = false;
       },
       error: (err) => {
@@ -41,6 +80,38 @@ export class PlantsList implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  applyFilters(): void {
+    this.filteredPlants = this.plants.filter(plant => {
+      const matchesSearch = plant.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchesLocation = !this.selectedLocationId || plant.locationId === this.selectedLocationId;
+      return matchesSearch && matchesLocation;
+    });
+  }
+
+  getLocationName(locationId: number): string {
+    const location = this.locations.find(loc => loc.id === locationId);
+    return location ? location.name : `ID: ${locationId}`;
+  }
+
+  getSpeciesName(speciesId: number): string {
+    const species = this.species.find(sp => sp.id === speciesId);
+    return species ? species.name : `ID: ${speciesId}`;
+  }
+
+  onSearchChange(): void {
+    this.applyFilters();
+  }
+
+  onLocationFilterChange(): void {
+    this.applyFilters();
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.selectedLocationId = null;
+    this.applyFilters();
   }
 
   openAddForm(): void {

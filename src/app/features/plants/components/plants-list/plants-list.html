@@ -4,10 +4,57 @@
       <h1>🌱 Plants Management</h1>
       <p class="subtitle">Manage your plants collection</p>
     </div>
-    <button class="btn-add" (click)="openAddForm()">
-      <span class="btn-icon">+</span>
-      Add New Plant
-    </button>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <button class="btn-add" (click)="openAddForm()">
+        <span class="btn-icon">+</span>
+        Add New Plant
+      </button>
+      <a routerLink="care-journal" class="btn-add btn-care-journal">
+        <span class="btn-icon">📝</span>
+        Журнал догляду
+      </a>
+    </div>
+  </div>
+
+  <!-- Filters Panel -->
+  <div class="filters-panel" *ngIf="!isLoading && !error && plants.length > 0">
+    <div class="filters-content">
+      <div class="filter-group">
+        <label for="search">🔍 Пошук за назвою</label>
+        <input
+          id="search"
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Введіть назву рослини..."
+          class="filter-input"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="location">📍 Фільтр за локацією</label>
+        <select
+          id="location"
+          [(ngModel)]="selectedLocationId"
+          (ngModelChange)="onLocationFilterChange()"
+          class="filter-select"
+        >
+          <option [ngValue]="null">Всі локації</option>
+          <option *ngFor="let location of locations" [ngValue]="location.id">
+            {{ location.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-clear-filters" (click)="clearFilters()" *ngIf="searchTerm || selectedLocationId">
+          ✖ Очистити фільтри
+        </button>
+        <span class="results-count">
+          Знайдено: <strong>{{ filteredPlants.length }}</strong> з {{ plants.length }}
+        </span>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="isLoading" class="loading">
@@ -21,31 +68,37 @@
   </div>
 
   <div *ngIf="!isLoading && !error" class="plants-content">
-    <div *ngIf="plants.length === 0" class="no-data">
+    <div *ngIf="filteredPlants.length === 0 && plants.length === 0" class="no-data">
       <div class="no-data-icon">🌿</div>
       <p>No plants found</p>
       <button class="btn-add-first" (click)="openAddForm()">Add Your First Plant</button>
     </div>
 
-    <div *ngIf="plants.length > 0" class="table-card">
+    <div *ngIf="filteredPlants.length === 0 && plants.length > 0" class="no-data">
+      <div class="no-data-icon">🔍</div>
+      <p>Нічого не знайдено за вашим запитом</p>
+      <button class="btn-clear-filters" (click)="clearFilters()">Очистити фільтри</button>
+    </div>
+
+    <div *ngIf="filteredPlants.length > 0" class="table-card">
       <table class="plants-table">
         <thead>
           <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Planting Date</th>
-            <th>Location ID</th>
-            <th>Species ID</th>
+            <th>Location</th>
+            <th>Species</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let plant of plants">
+          <tr *ngFor="let plant of filteredPlants">
             <td><span class="id-badge">{{ plant.id }}</span></td>
             <td><strong>{{ plant.name }}</strong></td>
             <td>{{ plant.plantingDate }}</td>
-            <td>{{ plant.locationId }}</td>
-            <td>{{ plant.speciesId }}</td>
+            <td>{{ getLocationName(plant.locationId) }}</td>
+            <td>{{ getSpeciesName(plant.speciesId) }}</td>
             <td>
               <div class="action-buttons">
                 <button class="btn-icon-action btn-edit" (click)="openEditForm(plant)" title="Edit">
@@ -66,6 +119,8 @@
 <app-plant-form 
   *ngIf="showForm"
   [plant]="selectedPlant"
+  [locations]="locations"
+  [species]="species"
   (formSubmit)="onFormSubmit($event)"
   (formCancel)="closeForm()">
 </app-plant-form>

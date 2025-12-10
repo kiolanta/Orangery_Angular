@@ -22,6 +22,18 @@ export const routes: Routes = [
     loadChildren: () => import('./features/employees/employees-module')
       .then(m => m.EmployeesModule)
   },
+
+  {
+    path: 'locations',
+    loadChildren: () => import('./features/locations/locations-module')
+      .then(m => m.LocationsModule)
+  },
+
+  {
+    path: 'species',
+    loadChildren: () => import('./features/species/species-module')
+      .then(m => m.SpeciesModule)
+  },
   
   { path: '**', redirectTo: 'dashboard' }
 ];

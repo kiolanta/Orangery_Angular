@@ -2,6 +2,7 @@ import { Component, inject, OnInit, Input, Output, EventEmitter } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PlantCreateViewModel, PlantViewModel } from '../../interfaces/plant.interface';
+import { LocationViewModel, SpeciesViewModel } from '../../../../core/interfaces';
 
 @Component({
   selector: 'app-plant-form',
@@ -13,6 +14,8 @@ export class PlantForm implements OnInit {
   private fb = inject(FormBuilder);
   
   @Input() plant: PlantViewModel | null = null;
+  @Input() locations: LocationViewModel[] = [];
+  @Input() species: SpeciesViewModel[] = [];
   @Output() formSubmit = new EventEmitter<PlantCreateViewModel | PlantViewModel>();
   @Output() formCancel = new EventEmitter<void>();
 

@@ -1,29 +1,4 @@
-  .btn-care-journal {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #f3e7ff 0%, #c9b6e7 100%);
-    color: #6c2eb7;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(108, 46, 183, 0.08);
-    &:hover {
-      background: linear-gradient(135deg, #e9d8fd 0%, #b794f4 100%);
-      color: #4b206e;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(108, 46, 183, 0.12);
-    }
-    .btn-icon {
-      font-size: 1.3rem;
-    }
-  }
-.plants-container {
+.locations-container {
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -69,90 +44,6 @@
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-      }
-    }
-  }
-
-  .filters-panel {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-
-    .filters-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 1.5rem;
-      align-items: end;
-
-      @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-
-      label {
-        font-weight: 500;
-        color: #333;
-        font-size: 0.9rem;
-      }
-
-      .filter-input,
-      .filter-select {
-        padding: 0.75rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.3s;
-
-        &:focus {
-          outline: none;
-          border-color: #667eea;
-        }
-      }
-
-      .filter-select {
-        cursor: pointer;
-        background: white;
-      }
-    }
-
-    .filter-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      align-items: flex-end;
-
-      .btn-clear-filters {
-        padding: 0.75rem 1.5rem;
-        background: #f5f5f5;
-        color: #666;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.2s;
-        white-space: nowrap;
-
-        &:hover {
-          background: #e0e0e0;
-        }
-      }
-
-      .results-count {
-        color: #666;
-        font-size: 0.9rem;
-        white-space: nowrap;
-
-        strong {
-          color: #667eea;
-          font-weight: 600;
-        }
       }
     }
   }
@@ -257,7 +148,7 @@
     overflow: hidden;
   }
 
-  .plants-table {
+  .locations-table {
     width: 100%;
     border-collapse: collapse;
 
@@ -346,4 +237,3 @@
     }
   }
 }
-

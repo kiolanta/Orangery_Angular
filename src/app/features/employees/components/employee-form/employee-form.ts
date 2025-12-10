@@ -36,7 +36,10 @@ export class EmployeeForm implements OnInit {
 
   onSubmit(): void {
     if (this.employeeForm.valid) {
-      const formValue = this.employeeForm.value;
+      const formValue = {
+        ...this.employeeForm.value,
+        salary: Number(this.employeeForm.value.salary) || 0
+      };
       
       if (this.isEditMode && this.employee) {
         const updatedEmployee: EmployeeViewModel = {

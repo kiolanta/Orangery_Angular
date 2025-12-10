@@ -1,0 +1,20 @@
+<div class="care-journal">
+  <div *ngIf="loading" class="care-journal__loading">Завантаження...</div>
+  <table *ngIf="!loading && cares.length" class="care-journal__table">
+    <thead>
+      <tr>
+        <th>Тип</th>
+        <th>Дата</th>
+        <th>ID працівника</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let care of cares">
+        <td>{{ care.type }}</td>
+        <td>{{ care.date }}</td>
+        <td>{{ care.employeeId }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!loading && !cares.length" class="care-journal__empty">Догляд не знайдено</div>
+</div>

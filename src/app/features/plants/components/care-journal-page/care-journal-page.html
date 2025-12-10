@@ -1,0 +1,28 @@
+<div class="care-journal-page">
+  <h2>Журнал догляду за рослинами</h2>
+  <button class="btn-add-care" (click)="showForm = !showForm" *ngIf="!showForm">+ Додати новий догляд</button>
+  <app-care-form *ngIf="showForm" [plants]="plants" [employees]="employees" (formSubmit)="onAddCare($event)" (formCancel)="onCancelForm()"></app-care-form>
+  <div *ngIf="loading" class="care-journal-page__loading">Завантаження...</div>
+  <div *ngIf="error" class="care-journal-page__error">{{ error }}</div>
+  <table *ngIf="!loading && cares.length" class="care-journal-page__table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Тип</th>
+        <th>Дата</th>
+        <th>Рослина</th>
+        <th>Працівник</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let care of cares">
+        <td>{{ care.id }}</td>
+        <td>{{ care.type }}</td>
+        <td>{{ care.date }}</td>
+        <td>{{ getPlantName(care.plantId) }}</td>
+        <td>{{ getEmployeeName(care.employeeId) }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!loading && !cares.length" class="care-journal-page__empty">Доглядів не знайдено</div>
+</div>
